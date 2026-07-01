@@ -1,0 +1,351 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="forklift_bot">
+
+  <!-- ===================== -->
+  <!-- Inertia Macros -->
+  <!-- ===================== -->
+
+  <xacro:macro name="inertial_box" params="mass x y z">
+    <inertial>
+      <origin xyz="0 0 0"/>
+      <mass value="${mass}"/>
+      <inertia
+        ixx="${(1.0/12.0)*mass*(y*y+z*z)}"
+        ixy="0" ixz="0"
+        iyy="${(1.0/12.0)*mass*(x*x+z*z)}"
+        iyz="0"
+        izz="${(1.0/12.0)*mass*(x*x+y*y)}"/>
+    </inertial>
+  </xacro:macro>
+
+  <xacro:macro name="inertial_cylinder" params="mass length radius">
+    <inertial>
+      <origin xyz="0 0 0"/>
+      <mass value="${mass}"/>
+      <inertia
+        ixx="${(1.0/12.0)*mass*(3*radius*radius+length*length)}"
+        ixy="0" ixz="0"
+        iyy="${(1.0/12.0)*mass*(3*radius*radius+length*length)}"
+        iyz="0"
+        izz="${0.5*mass*radius*radius}"/>
+    </inertial>
+  </xacro:macro>
+
+  <!-- ===================== -->
+  <!-- Base -->
+  <!-- ===================== -->
+
+  <link name="base_footprint"/>
+
+  <joint name="base_joint" type="fixed">
+    <parent link="base_footprint"/>
+    <child link="base_link"/>
+    <origin xyz="0 0 0.4"/>
+  </joint>
+
+  <link name="base_link">
+
+    <visual>
+      <geometry>
+        <box size="2.4 1.2 0.8"/>
+      </geometry>
+      <material name="yellow">
+        <color rgba="1 0.8 0 1"/>
+      </material>
+    </visual>
+
+    <collision>
+      <geometry>
+        <box size="2.4 1.2 0.8"/>
+      </geometry>
+    </collision>
+
+    <xacro:inertial_box mass="1800" x="2.4" y="1.2" z="0.8"/>
+
+  </link>
+
+  <!-- ===================== -->
+  <!-- Roof -->
+  <!-- ===================== -->
+
+  <link name="roof_link">
+
+    <visual>
+      <geometry>
+        <box size="1.2 1.0 0.05"/>
+      </geometry>
+    </visual>
+
+    <collision>
+      <geometry>
+        <box size="1.2 1.0 0.05"/>
+      </geometry>
+    </collision>
+
+    <xacro:inertial_box mass="30" x="1.2" y="1.0" z="0.05"/>
+
+  </link>
+
+  <joint name="roof_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="roof_link"/>
+    <origin xyz="0 0 1.6"/>
+  </joint>
+
+  <!-- ===================== -->
+  <!-- Mast -->
+  <!-- ===================== -->
+
+  <link name="mast_link">
+
+    <visual>
+      <geometry>
+        <box size="0.15 1.0 2.0"/>
+      </geometry>
+    </visual>
+
+    <collision>
+      <geometry>
+        <box size="0.15 1.0 2.0"/>
+      </geometry>
+    </collision>
+
+    <xacro:inertial_box mass="150" x="0.15" y="1.0" z="2.0"/>
+
+  </link>
+
+  <joint name="mast_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="mast_link"/>
+    <origin xyz="1.1 0 1.0"/>
+  </joint>
+
+  <!-- ===================== -->
+  <!-- Forks -->
+  <!-- ===================== -->
+
+  <link name="fork_left_link">
+    <visual>
+      <geometry>
+        <box size="1.0 0.08 0.05"/>
+      </geometry>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="1.0 0.08 0.05"/>
+      </geometry>
+    </collision>
+    <xacro:inertial_box mass="20" x="1.0" y="0.08" z="0.05"/>
+  </link>
+
+  <joint name="fork_left_joint" type="fixed">
+    <parent link="mast_link"/>
+    <child link="fork_left_link"/>
+    <origin xyz="0.55 0.25 -0.8"/>
+  </joint>
+
+  <link name="fork_right_link">
+    <visual>
+      <geometry>
+        <box size="1.0 0.08 0.05"/>
+      </geometry>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="1.0 0.08 0.05"/>
+      </geometry>
+    </collision>
+    <xacro:inertial_box mass="20" x="1.0" y="0.08" z="0.05"/>
+  </link>
+
+  <joint name="fork_right_joint" type="fixed">
+    <parent link="mast_link"/>
+    <child link="fork_right_link"/>
+    <origin xyz="0.55 -0.25 -0.8"/>
+  </joint>
+
+  <!-- ===================== -->
+  <!-- LiDAR -->
+  <!-- ===================== -->
+
+  <link name="lidar_link">
+
+    <visual>
+      <geometry>
+        <cylinder radius="0.07" length="0.08"/>
+      </geometry>
+    </visual>
+
+    <collision>
+      <geometry>
+        <cylinder radius="0.07" length="0.08"/>
+      </geometry>
+    </collision>
+
+    <xacro:inertial_cylinder mass="0.5" length="0.08" radius="0.07"/>
+
+  </link>
+
+  <joint name="lidar_joint" type="fixed">
+    <parent link="roof_link"/>
+    <child link="lidar_link"/>
+    <origin xyz="0 0 0.15"/>
+  </joint>
+
+  <!-- ===================== -->
+  <!-- Wheels -->
+  <!-- ===================== -->
+
+  <xacro:macro name="wheel" params="prefix x y">
+
+    <link name="${prefix}_wheel">
+
+      <visual>
+        <origin rpy="1.5708 0 0"/>
+        <geometry>
+          <cylinder radius="0.25" length="0.15"/>
+        </geometry>
+      </visual>
+
+      <collision>
+        <origin rpy="1.5708 0 0"/>
+        <geometry>
+          <cylinder radius="0.25" length="0.15"/>
+        </geometry>
+      </collision>
+
+      <xacro:inertial_cylinder
+        mass="30"
+        length="0.15"
+        radius="0.25"/>
+
+    </link>
+
+    <joint name="${prefix}_wheel_joint" type="continuous">
+      <parent link="base_link"/>
+      <child link="${prefix}_wheel"/>
+      <origin xyz="${x} ${y} -0.25"/>
+      <axis xyz="0 1 0"/>
+    </joint>
+
+  </xacro:macro>
+
+  <xacro:wheel prefix="front_left"  x="0.9"  y="0.55"/>
+  <xacro:wheel prefix="front_right" x="0.9"  y="-0.55"/>
+  <xacro:wheel prefix="rear_left"   x="-0.9" y="0.55"/>
+  <xacro:wheel prefix="rear_right"  x="-0.9" y="-0.55"/>
+
+  <!-- ===================== -->
+  <!-- IMU on LiDAR -->
+  <!-- ===================== -->
+
+  <gazebo reference="lidar_link">
+
+    <sensor name="imu_sensor" type="imu">
+
+      <always_on>true</always_on>
+      <update_rate>200</update_rate>
+
+      <plugin
+        filename="libgazebo_ros_imu_sensor.so"
+        name="imu_plugin">
+
+        <ros>
+          <remapping>~/out:=imu/data</remapping>
+        </ros>
+
+      </plugin>
+
+    </sensor>
+
+  </gazebo>
+
+  <!-- ===================== -->
+  <!-- 3D LiDAR -->
+  <!-- ===================== -->
+
+  <gazebo reference="lidar_link">
+
+    <sensor name="lidar_3d" type="ray">
+
+      <always_on>true</always_on>
+      <update_rate>10</update_rate>
+      <visualize>true</visualize> 
+
+      <ray>
+
+        <scan>
+
+          <horizontal>
+            <samples>360</samples>
+            <min_angle>-3.14159</min_angle>
+            <max_angle>3.14159</max_angle>
+          </horizontal>
+
+          <vertical>
+            <samples>16</samples>
+            <min_angle>-0.52</min_angle>
+            <max_angle>0.26</max_angle>
+          </vertical>
+
+        </scan>
+
+        <range>
+          <min>0.3</min>
+          <max>30.0</max>
+        </range>
+
+      </ray>
+
+      <plugin
+        name="scan_3d"
+        filename="libgazebo_ros_ray_sensor.so">
+
+        <ros>
+          <remapping>~/out:=points</remapping>
+        </ros>
+
+        <output_type>sensor_msgs/PointCloud2</output_type>
+        <frame_name>lidar_link</frame_name>
+
+      </plugin>
+
+    </sensor>
+
+  </gazebo>
+
+  <gazebo>
+  <plugin
+      name="diff_drive"
+      filename="libgazebo_ros_diff_drive.so">
+
+    <ros>
+      <namespace>/</namespace>
+    </ros>
+
+    <update_rate>50</update_rate>
+
+    <left_joint>front_left_wheel_joint</left_joint>
+    <left_joint>rear_left_wheel_joint</left_joint>
+
+    <right_joint>front_right_wheel_joint</right_joint>
+    <right_joint>rear_right_wheel_joint</right_joint>
+
+    <wheel_separation>1.1</wheel_separation>
+    <wheel_diameter>0.5</wheel_diameter>
+
+    <max_wheel_torque>500</max_wheel_torque>
+
+    <publish_odom>true</publish_odom>
+    <publish_odom_tf>true</publish_odom_tf>
+    <publish_wheel_tf>true</publish_wheel_tf>
+
+    <odometry_frame>odom</odometry_frame>
+    <robot_base_frame>base_footprint</robot_base_frame>
+
+    <topic>cmd_vel</topic>
+
+  </plugin>
+  </gazebo>
+
+</robot>

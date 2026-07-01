@@ -1,0 +1,146 @@
+Panels:
+  - Class: rviz_common/Displays
+    Name: Displays
+  - Class: rviz_common/Views
+    Name: Views
+Visualization Manager:
+  Class: ""
+  Displays:
+    - Class: rviz_default_plugins/Grid
+      Enabled: true
+      Name: Grid
+      Plane Cell Count: 40
+      Cell Size: 0.5
+      Reference Frame: map
+      Value: true
+
+    - Class: rviz_default_plugins/Map
+      Enabled: true
+      Name: Map
+      Topic:
+        Value: /map
+      Alpha: 0.7
+      Color Scheme: map
+      Draw Behind: false
+      Value: true
+
+    - Class: rviz_default_plugins/Map
+      Enabled: true
+      Name: Global Costmap
+      Topic:
+        Value: /global_costmap/costmap
+      Alpha: 0.45
+      Color Scheme: costmap
+      Draw Behind: false
+      Value: true
+
+    - Class: rviz_default_plugins/Map
+      Enabled: true
+      Name: Local Costmap
+      Topic:
+        Value: /local_costmap/costmap
+      Alpha: 0.55
+      Color Scheme: costmap
+      Draw Behind: false
+      Value: true
+
+    - Class: rviz_default_plugins/RobotModel
+      Enabled: true
+      Name: RobotModel
+      Description Topic:
+        Value: /robot_description
+      Visual Enabled: true
+      Collision Enabled: false
+      Alpha: 1
+      Value: true
+
+    - Class: rviz_default_plugins/TF
+      Enabled: true
+      Name: TF
+      Show Arrows: true
+      Show Axes: true
+      Show Names: true
+      Marker Scale: 0.5
+      Frame Timeout: 15
+      Value: true
+
+    - Class: rviz_default_plugins/PoseWithCovariance
+      Enabled: true
+      Name: AMCL Pose
+      Topic:
+        Value: /amcl_pose
+      Color: 255; 25; 0
+      Alpha: 1
+      Value: true
+
+    - Class: rviz_default_plugins/Path
+      Enabled: true
+      Name: Global Path
+      Topic:
+        Value: /plan
+      Color: 25; 255; 0
+      Alpha: 1
+      Line Style: Lines
+      Line Width: 0.05
+      Value: true
+
+    - Class: rviz_default_plugins/LaserScan
+      Enabled: true
+      Name: LaserScan
+      Topic:
+        Value: /scan
+      Size (m): 0.04
+      Style: Points
+      Color Transformer: FlatColor
+      Flat Color: 255; 0; 0
+      Alpha: 1
+      Value: true
+
+    - Class: rviz_default_plugins/PointCloud2
+      Enabled: true
+      Name: PointCloud2
+      Topic:
+        Value: /points
+      Size (m): 0.03
+      Style: Points
+      Color Transformer: FlatColor
+      Flat Color: 255; 0; 0
+      Alpha: 1
+      Value: true
+
+  Enabled: true
+  Global Options:
+    Fixed Frame: map
+    Background Color: 48; 48; 48
+    Frame Rate: 30
+  Name: root
+
+  Tools:
+    - Class: rviz_default_plugins/Interact
+    - Class: rviz_default_plugins/MoveCamera
+    - Class: rviz_default_plugins/Select
+    - Class: rviz_default_plugins/FocusCamera
+    - Class: rviz_default_plugins/Measure
+    - Class: rviz_default_plugins/SetInitialPose
+      Topic:
+        Value: /initialpose
+    - Class: rviz_default_plugins/SetGoal
+      Topic:
+        Value: /goal_pose
+    - Class: rviz_default_plugins/PublishPoint
+      Topic:
+        Value: /clicked_point
+
+  Views:
+    Current:
+      Class: rviz_default_plugins/Orbit
+      Distance: 10
+      Focal Point:
+        X: 0
+        Y: 0
+        Z: 0
+      Pitch: 1.2
+      Yaw: 1.57
+Window Geometry:
+  Height: 900
+  Width: 1200

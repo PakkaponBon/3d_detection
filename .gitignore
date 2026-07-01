@@ -1,0 +1,45 @@
+# ROS 2 build outputs
+**/build/
+**/install/
+**/log/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# ROS bags
+*.db3
+*.mcap
+warehouse_*_run_*/
+rosbag*/
+*.bag
+
+# Datasets / point cloud exports
+datasets/
+*.pcd
+*.npy
+*.pkl
+*.zip
+
+# AI model/checkpoints
+*.pth
+*.pt
+*.onnx
+
+# Virtual environments
+venv/
+.env/
+openpcdet_env/
+
+# OS/editor
+.DS_Store
+.vscode/
+.idea/
+*.swp
+
+# RTAB-Map / database map files
+*.db
+*.sqlite
+*.sqlite3
+amr_ws/maps/rtabmap/

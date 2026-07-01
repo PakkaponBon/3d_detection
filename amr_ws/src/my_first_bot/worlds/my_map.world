@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<sdf version="1.6">
+  <world name="mini_warehouse">
+    
+    <include><uri>model://sun</uri></include>
+    <include><uri>model://ground_plane</uri></include>
+
+    <model name='wall_north'>
+      <static>1</static> <pose>0 5 1 0 0 0</pose>
+      <link name='link'>
+        <collision name='col'><geometry><box><size>10 0.2 2</size></box></geometry></collision>
+        <visual name='vis'><geometry><box><size>10 0.2 2</size></box></geometry><material><script><name>Gazebo/Grey</name></script></material></visual>
+      </link>
+    </model>
+    
+    <model name='wall_south'>
+      <static>1</static>
+      <pose>0 -5 1 0 0 0</pose>
+      <link name='link'>
+        <collision name='col'><geometry><box><size>10 0.2 2</size></box></geometry></collision>
+        <visual name='vis'><geometry><box><size>10 0.2 2</size></box></geometry><material><script><name>Gazebo/Grey</name></script></material></visual>
+      </link>
+    </model>
+
+    <model name='wall_east'>
+      <static>1</static>
+      <pose>5 0 1 0 0 0</pose>
+      <link name='link'>
+        <collision name='col'><geometry><box><size>0.2 10 2</size></box></geometry></collision>
+        <visual name='vis'><geometry><box><size>0.2 10 2</size></box></geometry><material><script><name>Gazebo/Grey</name></script></material></visual>
+      </link>
+    </model>
+
+    <model name='wall_west'>
+      <static>1</static>
+      <pose>-5 0 1 0 0 0</pose>
+      <link name='link'>
+        <collision name='col'><geometry><box><size>0.2 10 2</size></box></geometry></collision>
+        <visual name='vis'><geometry><box><size>0.2 10 2</size></box></geometry><material><script><name>Gazebo/Grey</name></script></material></visual>
+      </link>
+    </model>
+
+    <model name='partition_blue'>
+      <static>1</static>
+      <pose>2 2 1 0 0 0</pose>
+      <link name='link'>
+        <collision name='col'><geometry><box><size>4 0.2 2</size></box></geometry></collision>
+        <visual name='vis'><geometry><box><size>4 0.2 2</size></box></geometry><material><script><name>Gazebo/Blue</name></script></material></visual>
+      </link>
+    </model>
+
+    <model name='partition_red'>
+      <static>1</static>
+      <pose>-2 -2 1 0 0 0</pose>
+      <link name='link'>
+        <collision name='col'><geometry><box><size>0.2 4 2</size></box></geometry></collision>
+        <visual name='vis'><geometry><box><size>0.2 4 2</size></box></geometry><material><script><name>Gazebo/Red</name></script></material></visual>
+      </link>
+    </model>
+
+    <model name='pillar_yellow'>
+      <static>1</static>
+      <pose>-3 3 1 0 0 0</pose>
+      <link name='link'>
+        <collision name='col'><geometry><cylinder><radius>0.5</radius><length>2</length></cylinder></geometry></collision>
+        <visual name='vis'><geometry><cylinder><radius>0.5</radius><length>2</length></cylinder></geometry><material><script><name>Gazebo/Yellow</name></script></material></visual>
+      </link>
+    </model>
+
+    <model name='pillar_green'>
+      <static>1</static>
+      <pose>3 -3 1 0 0 0</pose>
+      <link name='link'>
+        <collision name='col'><geometry><cylinder><radius>0.5</radius><length>2</length></cylinder></geometry></collision>
+        <visual name='vis'><geometry><cylinder><radius>0.5</radius><length>2</length></cylinder></geometry><material><script><name>Gazebo/Green</name></script></material></visual>
+      </link>
+    </model>
+
+  </world>
+</sdf>
