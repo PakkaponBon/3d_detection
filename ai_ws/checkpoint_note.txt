@@ -1,0 +1,6 @@
+Trained checkpoint used in the current POC:
+
+/home/bo/ai_ws/OpenPCDet/output/custom_models/pointpillar_warehouse/person_gg6/ckpt/checkpoint_epoch_50.pth
+
+This file is not uploaded to GitHub because model checkpoint files can be large.
+Copy it manually to the new PC if live detection is needed.
