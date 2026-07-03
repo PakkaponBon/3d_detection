@@ -53,22 +53,34 @@ class PCDExporter(Node):
 
         for p in point_cloud2.read_points(
             msg,
-            field_names=('x', 'y', 'z'),
+            field_names=('x', 'y', 'z', 'intensity'),
             skip_nans=True
         ):
-            x = float(p[0])
-            y = float(p[1])
-            z = float(p[2])
+            try:
+                # Works when read_points returns structured/named fields
+                x = float(p['x'])
+                y = float(p['y'])
+                z = float(p['z'])
+                intensity = float(p['intensity'])
+            except Exception:
+                # Works when read_points returns tuple/list style
+                x = float(p[0])
+                y = float(p[1])
+                z = float(p[2])
+                intensity = float(p[3])
 
             if abs(x) > 100 or abs(y) > 100 or abs(z) > 100:
                 continue
 
-            points.append([x, y, z])
+            points.append([x, y, z, intensity])
 
         if len(points) < 10:
             return
 
         points_np = np.array(points, dtype=np.float32)
+        self.get_logger().info(
+            f'Intensity min={points_np[:,3].min():.5f}, max={points_np[:,3].max():.5f}'
+        )
 
         filename = os.path.join(
             self.output_dir,
@@ -89,10 +101,10 @@ class PCDExporter(Node):
         header = (
             '# .PCD v0.7 - Point Cloud Data file format\n'
             'VERSION 0.7\n'
-            'FIELDS x y z\n'
-            'SIZE 4 4 4\n'
-            'TYPE F F F\n'
-            'COUNT 1 1 1\n'
+            'FIELDS x y z intensity\n'
+            'SIZE 4 4 4 4\n'
+            'TYPE F F F F\n'
+            'COUNT 1 1 1 1\n'
             f'WIDTH {n}\n'
             'HEIGHT 1\n'
             'VIEWPOINT 0 0 0 1 0 0 0\n'
@@ -102,8 +114,8 @@ class PCDExporter(Node):
 
         with open(filename, 'w') as f:
             f.write(header)
-            for x, y, z in points:
-                f.write(f'{x:.5f} {y:.5f} {z:.5f}\n')
+            for x, y, z, intentity in points:
+                f.write(f'{x:.5f} {y:.5f} {z:.5f} {intentity:.5f}\n')
 
 
 def main(args=None):
